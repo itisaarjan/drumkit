@@ -271,3 +271,70 @@ body.addEventListener('mouseout',function(event){
         elem.classList.remove('button-pressed');
     }
 });
+body.addEventListener('touchstart', function(event) {
+    // Get the target element
+    let target = event.target;
+
+    // Check if the target is a valid button
+    if (target.classList.contains('button')) {
+        // Determine the audio file based on the element's ID
+        let audioFile = '';
+        switch (target.id) {
+            case 'S':
+                audioFile = 'audio/hihat.wav';
+                break;
+            case 'A':
+                audioFile = 'audio/clap.wav';
+                break;
+            case 'D':
+                audioFile = 'audio/kick.wav';
+                break;
+            case 'F':
+                audioFile = 'audio/open-hat.wav';
+                break;
+            case 'H':
+                audioFile = 'audio/ride.wav';
+                break;
+            case 'J':
+                audioFile = 'audio/snare.wav';
+                break;
+            case 'K':
+                audioFile = 'audio/tom.wav';
+                break;
+            case 'L':
+                audioFile = 'audio/tink.wav';
+                break;
+            case 'G':
+                audioFile = 'audio/boom.wav';
+                break;
+        }
+
+        // Add button-pressed class and play sound
+        target.classList.add('button-pressed');
+        let audio = new Audio(audioFile);
+        audio.play();
+
+        // Store interval reference if not already stored
+        if (!interval[target.id]) {
+            interval[target.id] = setInterval(function() {
+                target.classList.add('button-pressed');
+                audio.play();
+            }, 0);
+        }
+
+        event.preventDefault(); // Prevent default touch behavior
+    }
+});
+body.addEventListener('touchend', function(event) {
+    // Get the target element
+    let target = event.target;
+
+    // Check if the target is a valid button
+    if (target.classList.contains('button')) {
+        // Clear the interval
+        clearInterval(interval[target.id]);
+
+        // Remove the button-pressed class
+        target.classList.remove('button-pressed');
+    }
+});
